@@ -615,6 +615,26 @@ describe 'corosync' do
     it_configures 'corosync'
   end
 
+  context 'on SLES platforms' do
+    let :facts do
+      {
+        osfamily:        'Suse'
+        operatingsystem: 'SLES'
+        operatingsystemmajrelease: '12',
+        processorcount:  '3',
+        ipaddress:       '127.0.0.1',
+      }
+    end
+
+    it 'validates the corosync configuration' do
+      is_expected.to contain_file('/etc/corosync/corosync.conf').with_validate_cmd(
+        '/usr/bin/env COROSYNC_MAIN_CONFIG_FILE=% /usr/sbin/corosync -t'
+      )
+    end
+
+    it_configures 'corosync'
+  end
+
   context 'on RedHat platforms' do
     let :facts do
       { osfamily:       'RedHat',

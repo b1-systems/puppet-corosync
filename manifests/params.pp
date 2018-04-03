@@ -100,9 +100,35 @@ class corosync::params {
       }
     }
 
+    'Suse': {
+      case $::operatingsystem {
+        'SLES': {
+        $package_crmsh  = true
+        $package_pcs    = false
+          # SLES 12: Name is pacemaker, not corosync
+          if versioncmp($::operatingsystemmajrelease, '12') >= 0 {
+            $set_votequorum = true
+            $manage_pacemaker_service = true
+            $test_corosync_config = true
+            $package_install_options = undef
+            # SLES 11: Name is corosync
+          } elsif versioncmp($::operatingsystemmajrelease, '11') == 0 {
+            $set_votequorum = false
+            $manage_pacemaker_service = false
+            $test_corosync_config = false
+            $package_install_options = undef
+          } else {
+            fail("Unsupported release of ${::operatingsystem}: ${::operatingsystemmajrelease}")
+          }
+        }
+        default: {
+          fail("Unsupported flavour of ${::osfamily}: ${::operatingsystem}")
+        }
+      }
+    }
+
     default: {
       fail("Unsupported operating system: ${::operatingsystem}")
     }
   }
-
 }
