@@ -111,12 +111,14 @@ class corosync::params {
             $manage_pacemaker_service = true
             $test_corosync_config = true
             $package_install_options = undef
+            $secauth_parameter_mode = '2.x'
             # SLES 11: Name is corosync
           } elsif versioncmp($::operatingsystemmajrelease, '11') == 0 {
             $set_votequorum = false
             $manage_pacemaker_service = false
             $test_corosync_config = false
             $package_install_options = undef
+            $secauth_parameter_mode = '1.x'
           } else {
             fail("Unsupported release of ${::operatingsystem}: ${::operatingsystemmajrelease}")
           }
