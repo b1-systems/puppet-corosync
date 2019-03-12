@@ -33,6 +33,13 @@
         "14.04",
         "16.04"
       ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemmajrelease": [
+        "11",
+        "12"
+      ]
     }
   ],
   "requirements": [
